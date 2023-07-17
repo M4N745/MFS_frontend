@@ -1,19 +1,19 @@
 # Galimos komandos:
 ### `yarn run start`
-Startuoti dev serveri.
+Startuoti dev serverį.
 
 
 ### `yarn run build`
-Paruosti projekta paleidimui serveryje.
+Paruošti projektą paleidimui serveryje.
 
 ### `yarn run typecheck`
-Praskenuoti projekto failus ar yra kokiu TypeScript klaidu.
+Praskenuoti projekto failus ar yra kokių TypeScript klaidų.
 
 ### `yarn run lint`
-Praskenuoti projekto failus ar yra kokiu stiliaus klaidu.
+Praskenuoti projekto failus ar yra kokių stiliaus klaidų.
 
 ### `yarn run lintfix`
-Praskenuoti projekto failus ir jei yra kokiu stiliaus klaidu sutvarkyti jas.
+Praskenuoti projekto failus ir jei yra kokių stiliaus klaidų - sutvarkyti jas.
 
 # Naudojama:
 * React: `18.1.0`
