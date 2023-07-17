@@ -1,0 +1,20 @@
+{
+  "search": "Paieška",
+  "newest_movies": "Naujausi filmai",
+  "all_movies": "Visi filmai",
+  "more": "Daugiau",
+  "current_user": "Prisijungta kaip",
+  "login": "Prisijungti",
+  "logout": "Atsijungti",
+  "username": "Prisijungimo vardas",
+  "password": "Slaptažodis",
+  "repeat_password": "Pakartoti Slaptažodį",
+  "register": "Registruotis",
+  "register_text": "Neturi paskyros?",
+  "login_text": "Jau esi užsiregistravęs?",
+  "movies_list": "Filmų sąrašas",
+  "less": "Mažiau",
+  "copyright": "For {{name}} from M. Vainoras",
+  "registration_successfull": "Registracija sėkminga",
+  "login_successfull": "Prisijungėte sėkmingai"
+}

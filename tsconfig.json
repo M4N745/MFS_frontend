@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "incremental": true,
+    "useUnknownInCatchVariables": false,
+    "experimentalDecorators": true,
+    "rootDir": "src",
+    "baseUrl": "./",
+    "paths": {
+      "@utils": ["src/utils"],
+      "@utils/*": ["src/utils/*"],
+      "@settings": ["src/settings"],
+      "@settings/*": ["src/settings/*"],
+      "@hooks": ["src/hooks"],
+      "@hooks/*": ["src/hooks/*"],
+      "@static_data": ["src/static_data"],
+      "@static_data/*": ["src/static_data/*"],
+      "@components": ["src/components"],
+      "@components/*": ["src/components/*"],
+      "@assets": ["src/assets"],
+      "@assets/*": ["src/assets/*"],
+      "@custom_types": ["src/types"],
+      "@custom_types/*": ["src/types/*"],
+    },
+    "typeRoots": ["node_modules/@types", "global-typings"]
+  },
+  "include": [
+    "src/**/*",
+    "global-typings/**/*",
+    "webpack.config.ts",
+    "babel.config.ts"
+  ],
+  "exclude": ["node_modules", "build", "./src/assets"]
+}
