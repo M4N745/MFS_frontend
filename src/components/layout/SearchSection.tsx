@@ -19,11 +19,11 @@ import { Requests, ApiList } from '@settings';
 import AutocompleteInput from '@components/misc/AutocompleteInput';
 import useSWR from 'swr';
 import { useTranslation } from 'react-i18next';
-import { ListResponse } from '@custom_types/api';
 import { specificMovieFetcher } from '@utils/fetchers';
+import MovieType from '@custom_types/api/MovieType';
 
 const optionsFetcher = async (url: string) => {
-  const data: ListResponse = await Requests.get(url);
+  const data: MovieType = await Requests.get(url);
   return data;
 };
 
@@ -45,7 +45,7 @@ export default function SearchSection() {
     setDebSearchKeyword(search);
   }, 1000));
 
-  const options = [...(data?.items ?? [])];
+  const options = [...(data ?? [])];
 
   useEffect(() => () => {
     debouncedHandleSearchRef.current.cancel();
