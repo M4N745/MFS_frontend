@@ -1,6 +1,6 @@
 type MovieType = {
   id: number;
-  cover_id: number;
+  cover: number;
   description: string;
   title: string;
   url: string;

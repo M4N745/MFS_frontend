@@ -1,6 +1,6 @@
-import { MovieType, ListResponse } from '@custom_types/api';
+import { MovieType } from '@custom_types/api';
 import { Dict } from '@custom_types/utils';
-import { Requests, ApiList } from '@settings';
+import { ApiList, Requests } from '@settings';
 
 type FileType = { id: number; url: string } | null;
 
@@ -24,26 +24,26 @@ async function fetchFiles(fileIds: number[]) {
 }
 
 export const moviesFetcher = async ([url, params]: [ApiList, Dict]) => {
-  const request: ListResponse = await Requests.get(url, { params });
+  const request: MovieType[] = await Requests.get(url, { params });
 
-  const fileIds = request.items.flatMap((item: Dict) => item.cover_id);
+  const fileIds = request.flatMap((item: Dict) => item.cover);
   const files = await fetchFiles(fileIds);
 
-  const newData = { ...request };
-  const newFiles = newData.items.map((obj: Dict) => {
-    const matchingItem = files.find((item: FileType) => item && item.id === obj.cover_id);
+  const newData = [...request];
+  const newFiles = newData.map((obj: Dict) => {
+    const matchingItem = files.find((item: FileType) => item && item.id === obj.cover);
     if (matchingItem) {
       return { ...obj, url: matchingItem.url } as MovieType;
     }
     return { ...obj, url: '' } as MovieType;
   });
 
-  return { ...newData, items: newFiles };
+  return newFiles;
 };
 export const specificMovieFetcher = async (url: string) => {
   const request: MovieType = await Requests.get(url);
 
-  const files = await fetchFiles([request.cover_id]);
+  const files = await fetchFiles([request.cover]);
 
   const newData = { ...request };
 

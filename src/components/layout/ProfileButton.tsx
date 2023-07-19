@@ -37,58 +37,62 @@ function RegisterForm() {
       const request = await Requests.post<UserResponse>(ApiList.register, values);
       if (request.username) {
         setErrors({});
-        enqueueSnackbar(t('registration_successfull', { ns: 'common' }), { variant: 'success' });
+        enqueueSnackbar(t('registration_successfully', { ns: 'common' }), { variant: 'success' });
       }
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        const transformedData: Dict = {};
-        Object.keys(err.response.data).forEach((key) => {
-          const [firstElement] = err.response.data[key];
-          transformedData[key] = firstElement;
-        });
-        setErrors(transformedData);
+      if (err.response && err.response.status === 400) {
+        setErrors(err.response.data);
+      } else {
+        enqueueSnackbar(t(err.response.data.message, { ns: 'common' }), { variant: 'error' });
       }
     }
   };
   return (
     <Box>
-      <Stack rowGap={2}>
-        <Input
-          type="text"
-          value={values.username}
-          placeholder={t('username', { ns: 'common' })}
-          onChange={setValues}
-          inputName="username"
-          error={errors.username}
-        />
-        <Input
-          type="password"
-          value={values.password}
-          placeholder={t('password', { ns: 'common' })}
-          onChange={setValues}
-          inputName="password"
-          error={errors.password}
-        />
-        <Input
-          type="password"
-          value={values.repeat_password}
-          placeholder={t('repeat_password', { ns: 'common' })}
-          onChange={setValues}
-          inputName="repeat_password"
-          error={errors.repeat_password}
-        />
-      </Stack>
-      <Button
-        variant="contained"
-        color="info"
-        fullWidth={false}
-        sx={{ mt: 3, borderRadius: 0 }}
-        disableElevation
-        size="large"
-        onClick={onSubmit}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
       >
-        {t('register', { ns: 'common' })}
-      </Button>
+        <Stack rowGap={2}>
+          <Input
+            type="text"
+            value={values.username}
+            placeholder={t('username', { ns: 'common' })}
+            onChange={setValues}
+            inputName="username"
+            error={errors.username}
+          />
+          <Input
+            type="password"
+            value={values.password}
+            placeholder={t('password', { ns: 'common' })}
+            onChange={setValues}
+            inputName="password"
+            error={errors.password}
+          />
+          <Input
+            type="password"
+            value={values.repeat_password}
+            placeholder={t('repeat_password', { ns: 'common' })}
+            onChange={setValues}
+            inputName="repeat_password"
+            error={errors.repeat_password}
+          />
+        </Stack>
+        <Button
+          variant="contained"
+          color="info"
+          fullWidth={false}
+          sx={{ mt: 3, borderRadius: 0 }}
+          disableElevation
+          size="large"
+          type="submit"
+        >
+          {t('register', { ns: 'common' })}
+        </Button>
+      </form>
     </Box>
   );
 }
@@ -97,54 +101,64 @@ function LoginForm({ closeModal }: { closeModal: () => void }) {
   const [values, setValues] = useState<Dict>({});
   const { enqueueSnackbar } = useSnackbar();
   const { mutate } = useUser();
+  const [errors, setErrors] = useState<Dict>({});
 
   const onSubmit = async () => {
     try {
       const request = await Requests.post<UserResponse>(ApiList.auth, values);
       if (request.token) {
-        enqueueSnackbar(t('login_successfull', { ns: 'common' }), { variant: 'success' });
+        enqueueSnackbar(t('login_successfully', { ns: 'common' }), { variant: 'success' });
         cookies.set('token', request.token);
         mutate();
         closeModal();
       }
     } catch (err) {
-      if (err.response && err.response.status === 422) {
-        enqueueSnackbar(err.response.data.message, { variant: 'error' });
+      if (err.response && err.response.status === 400) {
+        setErrors(err.response.data);
+      } else {
+        enqueueSnackbar(t(err.response.data.message, { ns: 'common' }), { variant: 'error' });
       }
     }
   };
 
   return (
     <Box>
-      <Stack rowGap={2}>
-        <Input
-          type="text"
-          value={values.username}
-          placeholder={t('username', { ns: 'common' })}
-          onChange={setValues}
-          inputName="username"
-          error=""
-        />
-        <Input
-          type="password"
-          value={values.password}
-          placeholder={t('password', { ns: 'common' })}
-          onChange={setValues}
-          inputName="password"
-          error=""
-        />
-      </Stack>
-      <Button
-        variant="contained"
-        color="info"
-        fullWidth={false}
-        sx={{ mt: 3, borderRadius: 0 }}
-        disableElevation
-        size="large"
-        onClick={onSubmit}
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          onSubmit();
+        }}
       >
-        {t('login', { ns: 'common' })}
-      </Button>
+        <Stack rowGap={2}>
+          <Input
+            type="text"
+            value={values.username}
+            placeholder={t('username', { ns: 'common' })}
+            onChange={setValues}
+            inputName="username"
+            error={errors.username}
+          />
+          <Input
+            type="password"
+            value={values.password}
+            placeholder={t('password', { ns: 'common' })}
+            onChange={setValues}
+            inputName="password"
+            error={errors.password}
+          />
+        </Stack>
+        <Button
+          variant="contained"
+          color="info"
+          fullWidth={false}
+          sx={{ mt: 3, borderRadius: 0 }}
+          disableElevation
+          size="large"
+          type="submit"
+        >
+          {t('login', { ns: 'common' })}
+        </Button>
+      </form>
     </Box>
   );
 }
@@ -195,7 +209,7 @@ export default function ProfileButton() {
               {t('current_user', { ns: 'common' })}
             </Typography>
             <Typography fontWeight={600}>
-              {userInfo?.username ?? 'guest'}
+              {userInfo?.username ?? t('guest', { ns: 'common' })}
             </Typography>
           </Stack>
         </Box>
@@ -278,7 +292,7 @@ export default function ProfileButton() {
               <Button
                 fullWidth={false}
                 color="info"
-                onClick={() => setFormType((prev) => (prev === 'login' ? 'register' : 'login'))}
+                onClick={() => setFormType((prev: string) => (prev === 'login' ? 'register' : 'login'))}
               >
                 {t(formType === 'login' ? 'register' : 'login', { ns: 'common' })}
               </Button>

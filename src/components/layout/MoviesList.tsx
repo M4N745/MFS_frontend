@@ -14,13 +14,18 @@ import { ApiList } from '@settings';
 import useSWR from 'swr';
 import { useState } from 'react';
 import { moviesFetcher } from '@utils/fetchers';
+import { MovieType } from '@custom_types/api';
 
 const PAGE_SIZE = 10;
 export default function MoviesList() {
   const theme = useTheme();
   const { t } = useTranslation();
-  const [sort, setSort] = useState<string | null>('title');
-  const { data: list, isLoading, isValidating } = useSWR(
+  const [sort, setSort] = useState<string | null>('ASC');
+  const {
+    data: list,
+    isLoading,
+    isValidating,
+  } = useSWR(
     [
       ApiList.movies,
       {
@@ -36,7 +41,6 @@ export default function MoviesList() {
       loadingTimeout: 5000,
     },
   );
-
   return (
     <Box
       sx={{
@@ -61,14 +65,14 @@ export default function MoviesList() {
           <Box>
             <ButtonGroup variant="contained" color="info">
               <Button
-                onClick={() => setSort('-title')}
-                sx={{ backgroundColor: sort === '-title' && theme.palette.accent.text }}
+                onClick={() => setSort('ASC')}
+                sx={{ backgroundColor: sort === 'ASC' && theme.palette.accent.text }}
               >
                 <Icon>sort</Icon>
               </Button>
               <Button
-                onClick={() => setSort('title')}
-                sx={{ backgroundColor: sort === 'title' && theme.palette.accent.text }}
+                onClick={() => setSort('DESC')}
+                sx={{ backgroundColor: sort === 'DESC' && theme.palette.accent.text }}
               >
                 <Icon sx={{ transform: 'rotate(180deg)' }}>sort</Icon>
               </Button>
@@ -76,11 +80,11 @@ export default function MoviesList() {
           </Box>
         </Stack>
         <Box sx={{ mt: 2 }}>
-          {!isLoading || (!isValidating && list)
+          {!isLoading && !isValidating && list
             ? (
               <Box>
                 <Grid container gap={2} justifyContent="center">
-                  {list && list.items.map((item, index) => (
+                  {list && list.map((item: MovieType, index: number) => (
                     <Grid
                       item
                       md={5.5}
